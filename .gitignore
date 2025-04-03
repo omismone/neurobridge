@@ -1,0 +1,48 @@
+# Python
+*.py[cod]
+__pycache__/
+*.so
+*.dylib
+*.pyd
+
+# PyCharm
+.idea/
+
+# Conda
+.env/
+.conda/
+
+# Virtualenv
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Python Wheels
+*.whl
+
+# Logs
+*.log
+
+# Database
+*.sqlite3
+*.db
+
+# Test Coverage
+.coverage
+coverage.xml
+nosetests.xml
+test-results/
+
+# Dist
+dist/
+build/
+*.egg-info/
+
+# OS Files
+.DS_Store
+Thumbs.db
