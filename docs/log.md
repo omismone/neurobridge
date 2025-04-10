@@ -58,13 +58,21 @@ Connectivity matrix _e_ constraints are only maximum constraints, not both minim
 
 The implementation of Peixoto's model is already done in the _graph\_tool_, I only need to use it. Start with one matrix and one patient, a following issue will be the integration of different matrices for one patient, since the tool works with only one.
 
+## Meeting 3 - 10/04/2025
 
+Review the theory of the Monte Carlo algorithm and reread Baruzzi's paper.
+
+Continue in the same way as Baruzzi post-clusterization, using the new material loaded. The structural matrix must allow the clusterization found with the functional matrix: neurons belonging to the same cluster should have similar characteristics (something like: the weighted sum of the inputs of two neurons from the same cluster should be equal), the structural matrix should be adjusted to ensure this.
+
+Make sure to integrate the various sessions of the same patient.
 
 ## To Do
-- Apply Peixoto's algorithm using the graph tool and compare it with Baruzzi's results.
+- Adjust the application of Peixoto's algorithm using the graph tool and compare it with Baruzzi's results.
 
 ### See
 - SBM
+- MCMC
+- Baruzzi
 
 
 ## Questions
