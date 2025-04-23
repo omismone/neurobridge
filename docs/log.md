@@ -66,8 +66,24 @@ Continue in the same way as Baruzzi post-clusterization, using the new material 
 
 Make sure to integrate the various sessions of the same patient.
 
+## Meeting 4 - 23/04/2025
+
+In Baruzzi’s paper, when referring to node heterogeneity, it means that the dynamic model describing each node is different from the others.
+
+The key elements of Baruzzi’s method are the following:
+- We use the network topology defined by the structural connectome as a starting point.
+- We use functional data to identify clusters of nodes with coherent activity through a hierarchical clustering algorithm, with multiple resolution levels.
+- We add dynamics to the nodes through a neural mass model (NMM), choosing the network model to be homogeneous in the nodes, and focus the analysis on exact cluster synchronization; at this stage, we neglect higher-order model factors that pertain to the node features.
+- We resort to the concept of equitable clusters in order to optimize the weights of the structural connectome with the aim of making the network compatible with the existence of clusters of highly functionally correlated areas; this is done by changing the weights as little as possible from their experimentally measured values and by taking into account their measured uncertainty.
+- We find a suitable range for a scale factor of the weights by applying the master stability function (MSF) approach in order to ensure the stability of the compatible synchronous clusters.\
+My work replaces the second step.
+
+Unlike what was stated previously, the dataset is not shared with Baruzzi’s paper; here a different atlas is used. The division is 116x116, and more specific information will be provided later.
+
+Expect the upcoming delivery of information regarding the dataset and post-clusterization details from Baruzzi.
+
 ## To Do
-- Adjust the application of Peixoto's algorithm using the graph tool and compare it with Baruzzi's results.
+- Adjust the application of Peixoto's algorithm using the graph tool and compare it with Baruzzi's results, note that the dataset is different.
 
 ### See
 - SBM
