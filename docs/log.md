@@ -7,15 +7,12 @@ The aim of this lab is to investigate an approach to reconcile information about
 The dynamics of the brain results from the complex interplay of several neural populations and is affected by both the individual dynamics of these areas and their connection structure. Hence, a fundamental challenge is to derive models of the brain that reproduce both structural and functional features measured experimentally.
 
 ## Task
-Use MATLAB and its toolboxes to 
 
 I. import and pre-process biological data on structural and functional connectivity
 
-II. select an atlas and parcellate our data accordingly
+II. design a dynamical network model able to reproduce some features of the biological data
 
-III. design a dynamical network model able to reproduce some features of the biological data
-
-IV. validate the designed model
+III. validate the designed model
 
 ### References
 V. Baruzzi, M. Lodi, F. Sorrentino, M. Storace, "Bridging functional and anatomical neural connectivity through cluster synchronization," Scientific Reports, vol. 13, p. 22430, Dec. 2023, doi: 10.1038/s41598-023-49746-2.
@@ -34,13 +31,13 @@ Documented code and a small presentation to let them see the workflow and how th
 
 ## Meeting 1 - 27/03/2025
 
-Use Peixoto's tool for clustering and Baruzzi's method (which shares the dataset with this project) for the second part on structural data integration.
+Use Peixoto's tool for clustering and Baruzzi's method (~~which shares the dataset with this project~~) for the second part on structural data integration.
 
 The dataset includes two matrices:
 - `matrices.mat`: functional matrix
 - `matrices_HNU1.mat`: connectivity matrix
 
-The dimensions are 116x116x300. The 116x116 dimensions represent brain regions (see the [supplemental material](https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-49746-2/MediaObjects/41598_2023_49746_MOESM1_ESM.pdf) of Baruzzi's paper on the publisher's website), and the z-axis indicates the session and the patient: for each patient (30), 10 sessions were conducted. From z=1 to z=10, we have the 10 sessions of the first patient; from z=11 to z=20, those of the second patient, and so on.
+The dimensions are 116x116x300. The 116x116 dimensions represent brain regions (~~see the [supplemental material](https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-49746-2/MediaObjects/41598_2023_49746_MOESM1_ESM.pdf) of Baruzzi's paper on the publisher's website~~), and the z-axis indicates the session and the patient: for each patient (30), 10 sessions were conducted. From z=1 to z=10, we have the 10 sessions of the first patient; from z=11 to z=20, those of the second patient, and so on.
 
 The functional matrix indicates the correlation between brain regions. For example, row 1, column 3 indicates the correlation between region 1 and region 3. Being a correlation matrix, the values range from -1 to 1.
 
@@ -62,7 +59,7 @@ The implementation of Peixoto's model is already done in the _graph\_tool_, I on
 
 Review the theory of the Monte Carlo algorithm and reread Baruzzi's paper.
 
-Continue in the same way as Baruzzi post-clusterization, using the new material loaded. The structural matrix must allow the clusterization found with the functional matrix: neurons belonging to the same cluster should have similar characteristics (something like: the weighted sum of the inputs of two neurons from the same cluster should be equal), the structural matrix should be adjusted to ensure this.
+Continue in the same way as Baruzzi post-clusterization, using the **new material loaded**. The structural matrix must allow the clusterization found with the functional matrix: neurons belonging to the same cluster should have similar characteristics (something like: the weighted sum of the inputs of two neurons from the same cluster should be equal), the structural matrix should be adjusted to ensure this.
 
 Make sure to integrate the various sessions of the same patient.
 
@@ -78,18 +75,21 @@ The key elements of Baruzzi’s method are the following:
 - We find a suitable range for a scale factor of the weights by applying the master stability function (MSF) approach in order to ensure the stability of the compatible synchronous clusters.\
 My work replaces the second step.
 
-Unlike what was stated previously, the dataset is not shared with Baruzzi’s paper; here a different atlas is used. The division is 116x116, and more specific information will be provided later.
+Unlike what was stated previously, the dataset is **not** shared with Baruzzi’s paper; here a different atlas is used. The division is 116x116, and more specific information will be provided later.
 
 Expect the upcoming delivery of information regarding the dataset and post-clusterization details from Baruzzi.
 
 ## To Do
-- Adjust the application of Peixoto's algorithm using the graph tool and compare it with Baruzzi's results, note that the dataset is different.
+- Integrate the data for each patient.
+- Make the clusterization with Peixoto's Ordered community structure tool.
 
 ### See
-- SBM
-- MCMC
-- Baruzzi
-
+- 
 
 ## Questions
-1.  
+1. Which atlas is used?
+1. How to compare with Baruzzi if the dataset is different?
+1. Consider 0.8 as threshold for functional connection is too much?
+1. Sum all the sessions can be a valid "integration"?
+1. I need to build a dendrogram or the best partitioning is already selected?
+1. Mid June stop?

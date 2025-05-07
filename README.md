@@ -8,7 +8,6 @@ This project involves using both **graph theory** and **machine learning** tools
 
 ## Objectives
 - Import and pre-process biological data on structural and functional connectivity.
-- Select an atlas and parcellate the data accordingly.
 - Design a dynamical network model to reproduce biological data features.
 - Validate the designed model.
 
