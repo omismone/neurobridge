@@ -79,17 +79,22 @@ Unlike what was stated previously, the dataset is **not** shared with Baruzzi’
 
 Expect the upcoming delivery of information regarding the dataset and post-clusterization details from Baruzzi.
 
+## Meeting 5 - 08/05/2025
+Big update: change dataset to the Baruzzi's one.
+
+Functional connection threshold: try to change it (use like 10 different values) and compare the various results with Baruzzi's. Later will be possible to make an analysis and see which is the best without considering the other paper.
+
+Consider 10 sessions as a single big session is a valid "integration" method.
+
+Build a dendrogram only if it's useful for visualization purposes.
+
+The ordering is needed cause the brain actually works like that, matrices are not symmetric. 
+
 ## To Do
-- Integrate the data for each patient.
-- Make the clusterization with Peixoto's Ordered community structure tool.
+- Change dataset, update docs to deal with it, try different thresholds.
 
 ### See
 - 
 
 ## Questions
-1. Which atlas is used?
-1. How to compare with Baruzzi if the dataset is different?
-1. Consider 0.8 as threshold for functional connection is too much?
-1. Sum all the sessions can be a valid "integration"?
-1. I need to build a dendrogram or the best partitioning is already selected?
 1. Mid June stop?
