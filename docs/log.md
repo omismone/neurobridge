@@ -31,13 +31,13 @@ Documented code and a small presentation to let them see the workflow and how th
 
 ## Meeting 1 - 27/03/2025
 
-Use Peixoto's tool for clustering and Baruzzi's method (~~which shares the dataset with this project~~) for the second part on structural data integration.
+Use Peixoto's tool for clustering and Baruzzi's method (which shares the dataset with this project) for the second part on structural data integration.
 
-The dataset includes two matrices:
-- `matrices.mat`: functional matrix
-- `matrices_HNU1.mat`: connectivity matrix
+~~The dataset includes two matrices:~~
+~~- `matrices.mat`: functional matrix~~
+~~- `matrices_HNU1.mat`: connectivity matrix~~
 
-The dimensions are 116x116x300. The 116x116 dimensions represent brain regions (~~see the [supplemental material](https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-49746-2/MediaObjects/41598_2023_49746_MOESM1_ESM.pdf) of Baruzzi's paper on the publisher's website~~), and the z-axis indicates the session and the patient: for each patient (30), 10 sessions were conducted. From z=1 to z=10, we have the 10 sessions of the first patient; from z=11 to z=20, those of the second patient, and so on.
+The dimensions are ~~116x116x300~~. The ~~116x116~~ dimensions represent brain regions (see the [supplemental material](https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-023-49746-2/MediaObjects/41598_2023_49746_MOESM1_ESM.pdf) of Baruzzi's paper on the publisher's website), and the z-axis indicates the session and the patient: for each patient (~~30~~), ~~10~~ sessions were conducted. From z=1 to z=10, we have the 10 sessions of the first patient; from z=11 to z=20, those of the second patient, and so on.
 
 The functional matrix indicates the correlation between brain regions. For example, row 1, column 3 indicates the correlation between region 1 and region 3. Being a correlation matrix, the values range from -1 to 1.
 
@@ -90,11 +90,29 @@ Build a dendrogram only if it's useful for visualization purposes.
 
 The ordering is needed cause the brain actually works like that, matrices are not symmetric. 
 
+
+## Meeting 6 - 15/05/2025
+[functional matrices](http://open-neurodata.s3-website-us-east-1.amazonaws.com/Functional/HNU1-11-12-20-m2g-func/), select the session and subject, then pick HOA connectomes, data are inside a csv.
+e.g.:
+    ```csv
+    1 2 0.1234
+    30 44 0.9876
+    ```
+    in this case the correlation between node 1 (that is "frontal pole" FP in harvard oxford) and the node 2 (IC) is 0.1234...
+
+Same things for [structural matrices](http://open-neurodata.s3-website-us-east-1.amazonaws.com/Diffusion/HNU1-8-27-20-m2g-native-csa-det/).
+
+It would be interesting to create a script that, given the patient ID, downloads their data and processes it.
+
+Continue implementing Peixoto's algorithm and check (as a first approximation using the connectogram) that the data is consistent with Baruzzi's.
+
 ## To Do
-- Change dataset, update docs to deal with it, try different thresholds.
+- 
 
 ### See
 - 
 
 ## Questions
-1. Mid June stop?
+1. Who is the patient? I'll make a script that only downloads their data!
+2. Mid June stop?
+
