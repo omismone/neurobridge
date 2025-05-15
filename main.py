@@ -1,8 +1,8 @@
 from scripts import functional_partitioning
 
 
-FUNCTIONAL_MAT_PATH = './data/matrices.mat'
-STRUCTURAL_MAT_PATH = './data/matrices_HNU1.mat'
+FUNCTIONAL_MAT_PATH = './data/matrices_func.mat'
+STRUCTURAL_MAT_PATH = './data/matrices_struct.mat'
 RESULTS_PATH = './results/'
 
 def main():

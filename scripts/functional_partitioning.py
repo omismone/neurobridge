@@ -1,48 +1,66 @@
 from graph_tool.all import *
+from graph_tool.inference import mcmc_equilibrate
 from scipy.io import loadmat
-
+import numpy as np
 
 def run(functional_mat_path, results_path):
     data = loadmat(functional_mat_path)
     mat = data['matrices']
-    mat = mat[:, :, 0]                                          # load only the first session and first subject
-    size = mat.shape[0]  # should be 116
+    NS = 30  # number of subjects
+    NSS = int(mat.shape[2] / NS)  # sessions per subject
+    size = mat.shape[0]
 
-    g = Graph(directed=True)
-    g.add_vertex(size)
-    weights = g.new_ep("double")
-    threshold = 0.33
-    for i in range(size):
-        for j in range(size):
-            if abs(mat[i, j]) > threshold:
-                edge = g.add_edge(g.vertex(i), g.vertex(j))
-                weights[edge] = mat[i, j]
-    g.ep["weight"] = weights
+    p1 = Graph(directed=True) # patient 1
+    p1.add_vertex(size)
+    weights = p1.new_ep("double")
+    threshold = 0.66
+    for session in range(NSS):
+        for i in range(size):
+            for j in range(size):
+                if abs(mat[i, j, session]) >= threshold:
+                    e = p1.add_edge(i, j)
+                    weights[e] = mat[i, j, session]
+    p1.ep["weight"] = weights
 
-    # ------------------------------
-    # Run the nested SBM to obtain hierarchical partitions
-    # ------------------------------
-    state = NestedBlockState(g)  # initialize nested SBM
+    ew = contract_parallel_edges(p1, weights)
+    state = NestedBlockState(p1, base_type=RankedBlockState, state_args=dict(eweight=ew))
+    mcmc_equilibrate(state, wait=1000, mcmc_args=dict(beta=np.inf, niter=100))
 
-    collected_partitions = []
-    # callback function that adds the current partition to the list
-    def collect_partitions(s):
-        collected_partitions.append(s.get_bs())
+    # positions
+    pos = p1.new_vp("vector<double>")
+    angles = np.linspace(0, 2*np.pi, size, endpoint=False)
+    for v in p1.vertices():
+        pos[v] = (np.cos(angles[int(v)]), np.sin(angles[int(v)]))
+    #colors
+    ec = p1.new_ep("vector<double>")
+    for e in p1.edges():
+        v = ew[e]
+        ec[e] = [1.0, 1.0, 0.0, 1.0] if v < 0.77 else [1.0, 0.5, 0.0, 1.0] if v < 0.88 else [1.0, 0.0, 0.0, 1.0]
 
-    # run additional sweeps and collect partitions via the callback
-    mcmc_equilibrate(state, force_niter=10000, mcmc_args=dict(niter=10), callback=collect_partitions)
+    # names (HOA S1, 48 regions)
+    labels = [
+        "FP","IC","SFG","MFG","IFGpt","IFGpo","PrG","TP",
+        "STGad","STGpd","MTGad","MTGpd","MTGtp","ITGad","ITGpd","ITGtp",
+        "PostG","SPL","SGad","SGpd","AG","LOCsd","LOCid","IcC",
+        "FMC","JLC","SC","PcG","CGad","CGpd","PC","CC",
+        "FOrC","PGad","PGpd","LG","TFCad","TFCpd","TOFC","OFG",
+        "FOpC","COC","POC","PP","HG","PT","ScC","OP"
+    ]
+    vt = p1.new_vp("string")
+    for v in p1.vertices(): vt[v] = labels[int(v)]
 
-    # disambiguate partitions and obtain marginals over all hierarchical levels
-    pmode = PartitionModeState(collected_partitions, nested=True, converge=True)
-    pv = pmode.get_marginal(g)  # vertex marginals at all levels
+    state.levels[0].draw(
+        pos=pos,
+        vertex_fill_color=[1, 1, 1, 1],
+        vertex_pen_width=1,
+        vertex_size=15,
+        vertex_text=vt,
+        vertex_font_size=10,
+        vertex_text_color=[0, 0, 0, 1],
+        edge_color=ec,
+        edge_pen_width=prop_to_size(ew, 1, 5),
+        output_size=(1000, 1000),
+    )
 
-    # obtain consensus (maximum a posteriori) nested partition
-    state = state.copy(bs=pmode.get_max_nested())
 
-    # ------------------------------
-    # Visualize the hierarchical partition
-    # ------------------------------
-    state.draw(vertex_shape="pie",
-               vertex_pie_fractions=pv,
-               output_size=(1600, 1600),
-               output= results_path + "functional_connectivity.svg")
+
