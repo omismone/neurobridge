@@ -88,10 +88,11 @@ Consider 10 sessions as a single big session is a valid "integration" method.
 
 Build a dendrogram only if it's useful for visualization purposes.
 
-The ordering is needed cause the brain actually works like that, matrices are not symmetric. 
+~~The ordering is needed cause the brain actually works like that, matrices are not symmetric.~~ 
 
 
 ## Meeting 6 - 15/05/2025
+download from the [file-tree](http://open-neurodata.s3-website-us-east-1.amazonaws.com/)
 [functional matrices](http://open-neurodata.s3-website-us-east-1.amazonaws.com/Functional/HNU1-11-12-20-m2g-func/), select the session and subject, then pick HOA connectomes, data are inside a csv.
 e.g.:
     ```csv
@@ -102,17 +103,18 @@ e.g.:
 
 Same things for [structural matrices](http://open-neurodata.s3-website-us-east-1.amazonaws.com/Diffusion/HNU1-8-27-20-m2g-native-csa-det/).
 
-It would be interesting to create a script that, given the patient ID, downloads their data and processes it.
+~~It would be interesting to create a script that, given the patient ID, downloads their data and processes it.~~
 
 Continue implementing Peixoto's algorithm and check (as a first approximation using the connectogram) that the data is consistent with Baruzzi's.
 
 ## To Do
-- 
+- csv to mat
+- continue implementing Peixoto's algorithm and check (as a first approximation using the connectogram) that the data is consistent with Baruzzi's
 
 ### See
 - 
 
 ## Questions
-1. Who is the patient? I'll make a script that only downloads their data!
+1. I've downloaded manually the csvs for the right subject, as I can see (but also in your data) the functional matrices are symmetric, you told me something different, there is a problem with data?
 2. Mid June stop?
 
