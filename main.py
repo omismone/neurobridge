@@ -1,14 +1,14 @@
-from scripts import functional_partitioning
+from scripts.analyzer import Analyzer
 from scripts.subject import Subject
-import numpy as np
 
-
-SUBJECT_ID = '25452'
 
 def main():
+    SUBJECT_ID = '25452'
+
     s = Subject(f"./data/subject-{SUBJECT_ID}", SUBJECT_ID)
-    np.set_printoptions(suppress=True)
-    print(s.functionals[:,:,9])
+
+    Analyzer.functional_partitionate(s, session=1)
+
     pass
 
 if __name__ == "__main__":
