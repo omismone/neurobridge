@@ -1,10 +1,14 @@
 from scripts import functional_partitioning
+from scripts.subject import Subject
+import numpy as np
 
-PATIENT_ID = '25452'
-RESULTS_PATH = './results/'
+
+SUBJECT_ID = '25452'
 
 def main():
-    #functional_partitioning.run(RESULTS_PATH)
+    s = Subject(f"./data/subject-{SUBJECT_ID}", SUBJECT_ID)
+    np.set_printoptions(suppress=True)
+    print(s.functionals[:,:,9])
     pass
 
 if __name__ == "__main__":

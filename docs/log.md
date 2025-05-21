@@ -75,7 +75,7 @@ The key elements of Baruzzi’s method are the following:
 - We find a suitable range for a scale factor of the weights by applying the master stability function (MSF) approach in order to ensure the stability of the compatible synchronous clusters.\
 My work replaces the second step.
 
-Unlike what was stated previously, the dataset is **not** shared with Baruzzi’s paper; here a different atlas is used. The division is 116x116, and more specific information will be provided later.
+~~Unlike what was stated previously, the dataset is **not** shared with Baruzzi’s paper; here a different atlas is used. The division is 116x116, and more specific information will be provided later.~~
 
 Expect the upcoming delivery of information regarding the dataset and post-clusterization details from Baruzzi.
 
@@ -108,7 +108,6 @@ Same things for [structural matrices](http://open-neurodata.s3-website-us-east-1
 Continue implementing Peixoto's algorithm and check (as a first approximation using the connectogram) that the data is consistent with Baruzzi's.
 
 ## To Do
-- csv to mat
 - continue implementing Peixoto's algorithm and check (as a first approximation using the connectogram) that the data is consistent with Baruzzi's
 
 ### See

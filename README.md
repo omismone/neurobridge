@@ -17,7 +17,7 @@ The project will use existing tools and algorithms for connectivity analysis:
 2. **Baruzzi's method** for integrating structural data and functional data.
 
 The dataset provided contains two matrices:
-- **Functional Matrix (`matrices.mat`)**: A correlation matrix between 116 brain regions (116x116) across 30 patients (300 sessions in total).
+- **Functional Matrix (`matrices.mat`)**: A correlation matrix between 48 brain regions (48x48) across different patients.
 - **Connectivity Matrix (`matrices_HNU1.mat`)**: A structural matrix representing the number of nerve bundles connecting the regions.
 
 ## References
@@ -42,7 +42,18 @@ This project uses **Python** and **Conda** for environment management. The requi
     ```
 
 ## Usage
-TBD
+1. **Download the data** from the open-neurodata portal:
+
+   - [Functional matrices](http://open-neurodata.s3-website-us-east-1.amazonaws.com/Functional/HNU1-11-12-20-m2g-func/)  
+   - [Structural matrices](http://open-neurodata.s3-website-us-east-1.amazonaws.com/Diffusion/HNU1-8-27-20-m2g-native-csa-det/)
+
+   For each subject, download all 10 session files in CSV format (use the HOA atlas connectomes).
+
+2. **Organize the data** locally:
+   - Create a folder `./data/subject-<ID>` where `<ID>` is the subject identifier (e.g., `./data/subject-25452`).
+   - Inside, create two subfolders:
+     - `functional`: put all functional connectome CSV files.
+     - `structural`: put all structural connectome CSV files.
 
 ## Documentation
 - The meeting logs and additional documentation can be found in the **`docs/`** folder, including:
