@@ -92,7 +92,7 @@ Build a dendrogram only if it's useful for visualization purposes.
 
 
 ## Meeting 6 - 15/05/2025
-download from the [file-tree](http://open-neurodata.s3-website-us-east-1.amazonaws.com/)
+Download from the [file-tree](http://open-neurodata.s3-website-us-east-1.amazonaws.com/)
 [functional matrices](http://open-neurodata.s3-website-us-east-1.amazonaws.com/Functional/HNU1-11-12-20-m2g-func/), select the session and subject, then pick HOA connectomes, data are inside a csv.
 e.g.:
     ```csv
@@ -107,6 +107,12 @@ Same things for [structural matrices](http://open-neurodata.s3-website-us-east-1
 
 Continue implementing Peixoto's algorithm and check (as a first approximation using the connectogram) that the data is consistent with Baruzzi's.
 
+## Meeting 7 - 22/05/2025
+Compute the mean of the structural features.
+
+Treat the dataset as directed — even though it is not — to ensure consistency with the future downstream data.
+
+
 ## To Do
 - continue implementing Peixoto's algorithm and check (as a first approximation using the connectogram) that the data is consistent with Baruzzi's
 
@@ -114,6 +120,5 @@ Continue implementing Peixoto's algorithm and check (as a first approximation us
 - 
 
 ## Questions
-1. I've downloaded manually the csvs for the right subject, as I can see (but also in your data) the functional matrices are symmetric, you told me something different, there is a problem with data?
-2. Mid June stop?
+1. 
 
