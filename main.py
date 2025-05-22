@@ -7,7 +7,7 @@ def main():
 
     s = Subject(f"./data/subject-{SUBJECT_ID}", SUBJECT_ID)
 
-    Analyzer.functional_partitionate(s, session=1)
+    Analyzer.structuralAnalysis(s, folder="./results")
 
     pass
 
