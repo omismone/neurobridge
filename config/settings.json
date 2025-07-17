@@ -1,0 +1,21 @@
+{
+  "threshold": {
+    "method": "percentile",
+    "value": 0.8
+  },
+  "graph": {
+    "directed": true
+  },
+  "clustering": {
+    "model": "DC-OSBM",
+    "mcmc_trials": 1000,
+    "minimize_dl": true
+  },
+  "input_paths": {
+    "functional_matrices_folder": "data/subject-25452/functional/",
+    "structural_matrices_folder": "data/subject-25452/structural/"
+  },
+  "output_paths": {
+    "graph": "results/graph.pdf"
+  }
+}

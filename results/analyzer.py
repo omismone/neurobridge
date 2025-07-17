@@ -67,8 +67,4 @@ class Analyzer:
         gt.graph_draw(g, pos=pos, vertex_text=g.vp.label, edge_color=e_color, vertex_fill_color="white", vertex_font_size=10, edge_pen_width=gt.prop_to_size(ew, mi=1, ma=4, power=1, log=True), output=f"{folder}/graph.png")
 
 
-    @staticmethod
-    def functional_partitionate(subject, session):
-        pass
-
 
