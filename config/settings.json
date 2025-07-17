@@ -15,7 +15,5 @@
     "functional_matrices_folder": "data/subject-25452/functional/",
     "structural_matrices_folder": "data/subject-25452/structural/"
   },
-  "output_paths": {
-    "graph": "results/graph.pdf"
-  }
+  "output_path": "results/subject-25452/"
 }
