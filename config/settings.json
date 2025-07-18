@@ -7,7 +7,7 @@
     "directed": true
   },
   "clustering": {
-    "model": "DC-OSBM",
+    "model": "nested",
     "mcmc_trials": 1000,
     "minimize_dl": true
   },

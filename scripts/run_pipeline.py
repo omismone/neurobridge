@@ -6,6 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.io import load_config, load_functional_sessions, load_structural_sessions
 from src.graph import build_graph_from_matrix
 from graph_tool.draw import graph_draw
+from src.clustering import run_osbm, run_nested_sbm
 
 # Load config file
 config = load_config("config/settings.json")
@@ -47,4 +48,14 @@ graph_draw(G,
            vertex_fill_color="#ffd000",
            output=full_output_path)
 
+# Clustering
+model = config["clustering"]["model"]
+clustering_result = None
+
+if model == "DC-OSBM":
+    clustering_result = run_osbm(G, config)
+elif model == "nested":
+    clustering_result = run_nested_sbm(G, config)
+else:
+    raise ValueError(f"Invalid clustering model '{model}'. Supported values: 'DC-OSBM', 'nested'.")
 
