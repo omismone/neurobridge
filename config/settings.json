@@ -8,8 +8,8 @@
   },
   "clustering": {
     "model": "nested",
-    "mcmc_trials": 1000,
-    "minimize_dl": true
+    "use_mcmc": true,
+    "mcmc_trials": 10000
   },
   "input_paths": {
     "functional_matrices_folder": "data/subject-25452/functional/",

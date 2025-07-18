@@ -5,8 +5,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.io import load_config, load_functional_sessions, load_structural_sessions
 from src.graph import build_graph_from_matrix
-from graph_tool.draw import graph_draw
+from graph_tool.draw import graph_draw, prop_to_size
 from src.clustering import run_osbm, run_nested_sbm
+import matplotlib
 
 # Load config file
 config = load_config("config/settings.json")
@@ -58,4 +59,25 @@ elif model == "nested":
     clustering_result = run_nested_sbm(G, config)
 else:
     raise ValueError(f"Invalid clustering model '{model}'. Supported values: 'DC-OSBM', 'nested'.")
+
+# Draw the clustered graph using SBM layout with scaled vertex labels
+if clustering_result and clustering_result["state"] is not None:
+    print("[run_pipeline] Drawing clustered graph with SBM layout and labels...")
+    sbm_output_path = os.path.join(output_dir, f"graph_{model.lower()}_clustered.pdf")
+
+    state = clustering_result["state"]
+    g = state.g
+
+    labels = g.new_vertex_property("int", vals=[i + 1 for i in range(g.num_vertices())])
+
+    state.draw(
+        edge_color=prop_to_size(g.ep.weight, power=1, log=True),
+        ecmap=(matplotlib.cm.inferno, 0.6),
+        eorder=g.ep.weight,
+        edge_pen_width=prop_to_size(g.ep.weight, 1, 4, power=1, log=True),
+        edge_gradient=[],
+        vertex_text=labels,
+        vertex_text_color="black",
+        output=sbm_output_path
+    )
 

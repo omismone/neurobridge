@@ -16,10 +16,6 @@ def run_osbm(graph: Graph, config: dict) -> dict:
             "state": graph-tool BlockState object
         }
     """
-    # Parse config parameters
-    model_type = config["clustering"]["model"]
-    n_iter = config["clustering"]["mcmc_trials"]
-    minimize_dl = config["clustering"]["minimize_dl"]
 
 
 
