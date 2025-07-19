@@ -1,0 +1,2 @@
+from .check_equitable import is_equitable
+from .optimize_structure import compute_equitable_structure

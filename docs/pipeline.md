@@ -1,89 +1,90 @@
-# Analytical Pipeline: Ordered Functional Clustering (Pre-structural Phase)
+# Analytical Pipeline: Functional Clustering and Structural Refinement
 
-This pipeline outlines the concrete steps for identifying ordered clusters of functionally coherent brain regions using Peixoto's Ordered Stochastic Block Model (OSBM), stopping before the structural refinement or dynamical modeling.
+This pipeline outlines the concrete steps followed in the **Neurobridge** project to identify clusters of functionally coherent brain regions and integrate structural data through equitable refinement of anatomical connectivity.
 
+---
 
 ## **Step 1: Data Preprocessing**
 
 **Input**: CSV fMRI data from a public dataset (HNU1)  
-**Output**: Functional connectivity matrices
+**Output**: Session-wise functional connectivity matrices
 
-- **Aggregate Scans**: Compute the mean correlation matrix or select a representative scan using clustering similarity metrics (as in Baruzzi et al.).
+- Load 10 functional matrices (one per session)
+- Each matrix corresponds to a 48x48 correlation matrix across brain regions
 
+---
 
-## **Step 2: Graph Construction**
+## **Step 2: Functional Clustering**
 
-**Input**: Correlation matrix $X$  
-**Output**: Directed graph representation $G$
+**Input**: One graph per functional session  
+**Output**: Set of node partitions, one per session
 
-- **Construct Graph from Correlation Matrix**:
-  - Threshold $X$ to remove weak or spurious correlations (e.g., retain top 20% of values)
-  - Represent $X$ as a directed, weighted adjacency matrix $A_{ij}$
+- Build a graph from each functional matrix using a percentile-based threshold
+- Run community detection (either OSBM or Nested SBM) on each graph
+- Store resulting group assignments per session
 
+---
 
-## **Step 3: Ordered Community Detection (Peixoto, 2022)**
+## **Step 3: Session Selection**
 
-**Input**: Graph $G$  
-**Output**: Ordered partition of ROIs (clusters + rank)
+**Input**: 10 sets of group assignments (one per session)  
+**Output**: Representative session and its functional partition
 
-1. **Run Ordered Stochastic Block Model (OSBM)**
-   - Use `graph-tool` for nonparametric Bayesian inference
-   - Model: Degree-corrected, ordered SBM (DC-OSBM)
+- Compute pairwise Fowlkes–Mallows similarity between all session partitions
+- Select the session with the highest mean similarity to the others
+- Use its graph and partition as the functional reference
 
-2. **MCMC Inference**
-   - Sample the posterior distribution over group assignments and orderings
-   - Find the partition $b^*$ that minimizes the description length:
-     $$ \Sigma(A, b) = -\log P(A | b) - \log P(b) $$
+---
 
-3. **Extract Ordered Clustering**
-   - Assign nodes to groups $C_1, \dots, C_k$
-   - Infer a ranking/order over the groups
-   - Store the group-to-group edge preferences $e_{rs}$ (directional pattern)
+## **Step 4: Graph Visualization**
 
+**Input**: Functional graph and clustering result  
+**Output**: PDF visualizations
 
-## **Step 4: Cluster Stability and Granularity Analysis**
+- Plot the raw functional graph after thresholding
+- Plot the clustered graph using graph-tool's state-drawing and inferred layout
+- Include vertex labels and edge weights
 
-**Input**: MCMC samples from OSBM  
-**Output**: Robust multi-resolution cluster hierarchy
+---
 
-1. **Compute Marginal Rank Distributions**
-   - Estimate rank uncertainty $\pi_i(r)$ for each node
+## **Step 5: Structural Integration**
 
-2. **Identify Stable Cluster Levels**
-   - Use similarity indices (e.g., Fowlkes–Mallows index across multiple scans)
-   - Select resolution levels $\ell_k^*$ with high intra-session consistency
+**Input**: 10 structural matrices (connectomes) and functional partition  
+**Output**: Equitable matrix \( A_k \)
 
-3. **Export Clusters for Further Use**
-   - Save representative partitions at selected granularities $\ell_k^*$
+- Average the 10 structural matrices to obtain \( A_0 \)
+- Solve a convex optimization problem to find \( A_k \), the closest symmetric matrix to \( A_0 \) that is equitable w.r.t. the functional partition
+- Save both \( A_0 \) and \( A_k \) to disk
 
+---
 
-## **Step 5: Summary and Data Export**
+## **Outputs**
 
-**Output**: Final functional parcellations, cluster rankings, group-level adjacency matrix
+All outputs are saved in `results/subject-<ID>/`:
 
-- Ordered clustering: list of node → cluster + rank assignment
-- Group interaction matrix $e_{rs}$
-- Node-level rank uncertainty estimates
-- Dendrogram or clustering visualization
+- `graph_thresh-XX_directed.pdf`: Raw functional graph
+- `graph_nested_clustered.pdf`: Clustered graph after SBM
+- `functional_partition.csv`: Final partition used for structural refinement
+- `A0_structural_mean.csv`: Mean structural matrix across sessions
+- `Ak_structural_equitable.csv`: Optimized equitable matrix
 
+---
 
 ## **Tools & Libraries**
 
 - **Data Handling**:  
-  - `pandas`, `numpy` — for CSV import and manipulation
+  - `numpy`, `pandas`, `cvxpy`
 
-- **Graph Construction & Manipulation**:  
-  - `networkx` or `graph-tool` (preferred for Peixoto model compatibility)
+- **Graph Construction & Clustering**:  
+  - `graph-tool` — for graph representation and stochastic block model inference
 
-- **Community Detection / Inference**:  
-  - `graph-tool` — implements Peixoto’s ordered SBM with MCMC
-
-- **Clustering Evaluation / Similarity Metrics**:  
-  - `scikit-learn` — for Fowlkes–Mallows index and other metrics
+- **Clustering Evaluation**:  
+  - `scikit-learn` — for Fowlkes–Mallows index
 
 - **Visualization**:  
-  - `matplotlib`, `seaborn`, `plotly` — for matrix heatmaps, dendrograms, rank distributions
+  - `matplotlib`, `graph-tool`
 
-- **(Optional) Scientific Computing**:  
-  - `scipy`, `joblib` — for parallelism and numerical stability
+---
 
+## Notes
+This pipeline prepares the necessary inputs for the final phase of the Baruzzi et al. framework: dynamic simulation and synchronization validation — not implemented here.

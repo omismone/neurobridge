@@ -98,11 +98,11 @@ Treat the dataset as directed — even though it is not — to ensure consistenc
 
 
 ## To Do
-- continue implementing Peixoto's algorithm and check (as a first approximation using the connectogram) that the data is consistent with Baruzzi's
+- 
 
 ### See
 - 
 
 ## Questions
-1. 
+- 
 

@@ -3,12 +3,13 @@ import os
 import numpy as np
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.io import load_config, load_functional_sessions, load_structural_sessions
+from src.io import load_config, load_functional_sessions, load_structural_sessions, save_matrix, save_labels
 from src.graph import build_graph_from_matrix
 from graph_tool.draw import graph_draw, prop_to_size
 from src.clustering import run_osbm, run_nested_sbm
 import matplotlib
 from sklearn.metrics import fowlkes_mallows_score
+from src.structural import is_equitable, compute_equitable_structure
 
 # Load config file
 config = load_config("config/settings.json")
@@ -109,3 +110,23 @@ if clustering_result and clustering_result["state"] is not None:
         output=sbm_output_path
     )
 
+# Compute average structural matrix
+avg_structural = np.mean(structural_data, axis=2)
+print("[run_pipeline] Computed average structural matrix A0")
+
+# Check if partition is equitable
+partition = clustering_result["labels"]
+is_eq = is_equitable(avg_structural, partition)
+
+if is_eq:
+    print("[run_pipeline] Partition is already equitable on A0.")
+    Ak = avg_structural
+else:
+    print("[run_pipeline] Partition is NOT equitable on A0. Solving for Ak...")
+    Ak = compute_equitable_structure(avg_structural, partition)
+    print("[run_pipeline] Optimization completed. Ak is now equitable.")
+
+# Save results
+save_matrix(avg_structural, output_dir, "A0_structural_mean")
+save_matrix(Ak, output_dir, "Ak_structural_equitable")
+save_labels(partition, output_dir, "functional_partition")
