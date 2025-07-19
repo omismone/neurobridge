@@ -8,6 +8,7 @@ from src.graph import build_graph_from_matrix
 from graph_tool.draw import graph_draw, prop_to_size
 from src.clustering import run_osbm, run_nested_sbm
 import matplotlib
+from sklearn.metrics import fowlkes_mallows_score
 
 # Load config file
 config = load_config("config/settings.json")
@@ -24,15 +25,53 @@ os.makedirs(output_dir, exist_ok=True)
 functional_data = load_functional_sessions(functional_path)
 structural_data = load_structural_sessions(structural_path)
 
-# Aggregate functional scans
-avg_functional = np.mean(functional_data, axis=2)
-
 # Get parameters from config
 threshold = config["threshold"]["value"]
 directed = config["graph"]["directed"]
 
-# Build graph
-G = build_graph_from_matrix(avg_functional, threshold=threshold, directed=directed)
+# Run clustering on each functional matrix and select representative session
+model = config["clustering"]["model"]
+n_sessions = functional_data.shape[2]
+
+partitions = []
+graphs = []
+states = []
+
+for i in range(n_sessions):
+    print(f"[run_pipeline] Processing session {i + 1} of {n_sessions}")
+    mat = functional_data[:, :, i]
+    G = build_graph_from_matrix(mat, threshold=threshold, directed=directed)
+    graphs.append(G)
+
+    if model == "DC-OSBM":
+        result = run_osbm(G, config)
+    elif model == "nested":
+        result = run_nested_sbm(G, config)
+    else:
+        raise ValueError(f"Invalid clustering model '{model}'. Supported values: 'DC-OSBM', 'nested'.")
+
+    partitions.append(result["labels"])
+    states.append(result["state"])
+
+# Compute pairwise similarity (Fowlkes–Mallows)
+n = len(partitions)
+sim = np.zeros((n, n))
+for i in range(n):
+    for j in range(n):
+        if i != j:
+            sim[i, j] = fowlkes_mallows_score(partitions[i], partitions[j])
+
+avg_sim = sim.mean(axis=1)
+best_idx = np.argmax(avg_sim)
+
+print(f"[run_pipeline] Selected representative session: {best_idx + 1} (mean similarity = {avg_sim[best_idx]:.3f})")
+
+# Extract best graph and clustering result
+G = graphs[best_idx]
+clustering_result = {
+    "labels": partitions[best_idx],
+    "state": states[best_idx]
+}
 
 # Build output filename
 threshold_pct = int(threshold * 100)
@@ -48,17 +87,6 @@ graph_draw(G,
            edge_pen_width=0.6,
            vertex_fill_color="#ffd000",
            output=full_output_path)
-
-# Clustering
-model = config["clustering"]["model"]
-clustering_result = None
-
-if model == "DC-OSBM":
-    clustering_result = run_osbm(G, config)
-elif model == "nested":
-    clustering_result = run_nested_sbm(G, config)
-else:
-    raise ValueError(f"Invalid clustering model '{model}'. Supported values: 'DC-OSBM', 'nested'.")
 
 # Draw the clustered graph using SBM layout with scaled vertex labels
 if clustering_result and clustering_result["state"] is not None:

@@ -3,50 +3,38 @@ from graph_tool.all import minimize_nested_blockmodel_dl
 
 def run_nested_sbm(graph, config):
     """
-    Runs Nested Stochastic Block Model (Nested SBM) inference on the given graph.
-    Optionally performs MCMC sampling to explore alternative partitions.
-
-    Parameters:
-        graph (Graph): graph-tool graph (can be directed or undirected).
-        config (dict): Configuration dictionary with clustering parameters.
+    Runs Nested SBM on the given graph.
+    Selects the first level with more than 1 group.
 
     Returns:
         dict: {
-            "labels": numpy array of node → group at selected level,
+            "labels": node→group array,
             "levels": list of np.ndarray for all levels,
-            "order": None (not defined for Nested SBM),
-            "state": graph-tool BlockState object
+            "order": None,
+            "state": graph-tool BlockState
         }
     """
-    print("[run_nested_sbm] Minimizing description length with nested SBM...")
+    # print("[run_nested_sbm] Running nested SBM inference...")
     state = minimize_nested_blockmodel_dl(graph)
 
-    # # Optional MCMC refinement
-    # use_mcmc = config["clustering"].get("use_mcmc", False)
-    # if use_mcmc:
-    #     n_iter = config["clustering"].get("mcmc_trials", 1000)
-    #     print(f"[run_nested_sbm] Running MCMC sweep ({n_iter} iterations)...")
-    #     state.mcmc_sweep(niter=n_iter)
-
-    # Extract all levels of the hierarchy
     levels = []
     for level in range(len(state.get_levels())):
-        level_state = state.project_level(level)
-        labels = level_state.get_blocks().a.copy()
-        levels.append(labels)
+        lbl = state.project_level(level).get_blocks().a.copy()
+        levels.append(lbl)
+        if np.unique(lbl).size == 1:  # stop if collapsed
+            break
 
-    print("[run_nested_sbm] Hierarchy levels and group counts:")
-    for i, level in enumerate(levels):
-        print(f"  Level {i}: {np.unique(level).size} groups")
+    level_summary = [f"L{idx}:{np.unique(lbl).size}" for idx, lbl in enumerate(levels)]
+    print(f"    Hierarchy levels: {' | '.join(level_summary)}")
 
-    # Select the first non-trivial level (more than 1 group), or fallback to level 0
-    selected_level = next((i for i, lvl in enumerate(levels) if np.unique(lvl).size > 1), 0)
+
+    selected_level = next((i for i, lbl in enumerate(levels) if np.unique(lbl).size > 1), 0)
     selected_labels = levels[selected_level]
+    print(f"    → Selected level {selected_level} with {np.unique(selected_labels).size} groups")
 
-    print(f"[run_nested_sbm] Using level {selected_level} with {np.unique(selected_labels).size} groups.")
 
     return {
-        "labels": selected_labels,
+        "labels": levels[selected_level],
         "levels": levels,
         "order": None,
         "state": state

@@ -7,9 +7,7 @@
     "directed": true
   },
   "clustering": {
-    "model": "nested",
-    "use_mcmc": true,
-    "mcmc_trials": 10000
+    "model": "nested"
   },
   "input_paths": {
     "functional_matrices_folder": "data/subject-25452/functional/",
