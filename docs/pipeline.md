@@ -20,7 +20,7 @@ This pipeline outlines the concrete steps followed in the **Neurobridge** projec
 **Output**: Set of node partitions, one per session
 
 - Build a graph from each functional matrix using a percentile-based threshold
-- Run community detection (either OSBM or Nested SBM) on each graph
+- Run community detection (Nested SBM) on each graph
 - Store resulting group assignments per session
 
 ---

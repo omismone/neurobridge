@@ -77,7 +77,7 @@ conda activate neurobridge
 3. **Edit configuration** in `config/settings.json` to reflect:
    - input paths
    - graph type
-   - clustering model (`DC-OSBM` or `nested`)
+   - clustering model 
    - thresholding strategy
 
 4. **Run the pipeline**:
@@ -105,7 +105,7 @@ Including:
 src/
 ├── io/                  # loading and saving
 ├── graph/               # graph building
-├── clustering/          # OSBM / nested SBM
+├── clustering/          # nested SBM
 └── structural/          # A_k optimization
 ```
 

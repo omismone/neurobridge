@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.io import load_config, load_functional_sessions, load_structural_sessions, save_matrix, save_labels
 from src.graph import build_graph_from_matrix
 from graph_tool.draw import graph_draw, prop_to_size
-from src.clustering import run_osbm, run_nested_sbm
+from src.clustering import run_nested_sbm
 import matplotlib
 from sklearn.metrics import fowlkes_mallows_score
 from src.structural import is_equitable, compute_equitable_structure
@@ -44,12 +44,7 @@ for i in range(n_sessions):
     G = build_graph_from_matrix(mat, threshold=threshold, directed=directed)
     graphs.append(G)
 
-    if model == "DC-OSBM":
-        result = run_osbm(G, config)
-    elif model == "nested":
-        result = run_nested_sbm(G, config)
-    else:
-        raise ValueError(f"Invalid clustering model '{model}'. Supported values: 'DC-OSBM', 'nested'.")
+    result = run_nested_sbm(G, config)
 
     partitions.append(result["labels"])
     states.append(result["state"])

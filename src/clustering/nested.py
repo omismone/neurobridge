@@ -10,7 +10,6 @@ def run_nested_sbm(graph, config):
         dict: {
             "labels": node→group array,
             "levels": list of np.ndarray for all levels,
-            "order": None,
             "state": graph-tool BlockState
         }
     """
@@ -36,6 +35,5 @@ def run_nested_sbm(graph, config):
     return {
         "labels": levels[selected_level],
         "levels": levels,
-        "order": None,
         "state": state
     }
