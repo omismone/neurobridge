@@ -1,7 +1,7 @@
 {
   "threshold": {
     "method": "percentile",
-    "value": 0.8
+    "value": 0.9
   },
   "graph": {
     "directed": true

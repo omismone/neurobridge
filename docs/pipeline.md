@@ -88,3 +88,54 @@ All outputs are saved in `results/subject-<ID>/`:
 
 ## Notes
 This pipeline prepares the necessary inputs for the final phase of the Baruzzi et al. framework: dynamic simulation and synchronization validation — not implemented here.
+
+---
+
+## Results
+
+As a conclusive stage of this project, we evaluate the functional clustering outcomes across different graph construction thresholds. This analysis focuses on a single subject and provides tangible insights into the community structure, even without proceeding to the dynamical modeling phase described in Baruzzi et al.
+
+We run the entire pipeline — including clustering and equitable structural refinement — on the same subject while varying the percentile threshold used to build the functional graph. Below are the clustered graphs obtained using Nested SBM, shown for six different thresholds.
+
+### Clustered Functional Graphs (Nested SBM)
+
+#### Threshold = 0.5
+![Clustered graph threshold 0.5](../results/subject-25452/graph_nested_clustered_thresh-50.png)
+- Very dense connectivity results in numerous overlapping connections.
+- Many small communities are detected, though their separation is visually ambiguous.
+- Harder to interpret due to potential noise retained from low correlations.
+
+#### Threshold = 0.6
+![Clustered graph threshold 0.6](../results/subject-25452/graph_nested_clustered_thresh-60.png)
+- Still highly connected, but some structure begins to emerge.
+- Community separation becomes clearer, but overlaps are frequent.
+- Appears to balance density and clarity better than 0.5.
+
+#### Threshold = 0.7
+![Clustered graph threshold 0.7](../results/subject-25452/graph_nested_clustered_thresh-70.png)
+- Well-balanced sparsity and structure.
+- Clear, distinguishable clusters with distinct inter-group links.
+- Likely a good compromise between noise reduction and community preservation.
+
+#### Threshold = 0.8
+![Clustered graph threshold 0.8](../results/subject-25452/graph_nested_clustered_thresh-80.png)
+- Less dense, and the modular structure is now crisp and easy to read.
+- Cluster boundaries align well with visibly distinct edge bundles.
+- Appears to match best with expectations for functional clustering.
+
+#### Threshold = 0.85
+![Clustered graph threshold 0.85](../results/subject-25452/graph_nested_clustered_thresh-85.png)
+- Graph is increasingly sparse, and some nodes show limited connectivity.
+- While communities are still identifiable, fragmentation begins to occur.
+- Some weakly connected areas lose detail.
+
+#### Threshold = 0.9
+![Clustered graph threshold 0.9](../results/subject-25452/graph_nested_clustered_thresh-90.png)
+- Extremely sparse, only the strongest connections remain.
+- Communities are sharply defined, but peripheral or minor structures are lost.
+- Risk of oversimplification — too few links to reflect full functional complexity.
+
+### Final Notes
+This result set provides a concrete basis to assess how thresholding affects brain parcellation. The most informative graphs appear in the 0.7–0.8 range, where clusters are both interpretable and structurally meaningful. These figures offer an alternative to dynamic simulation for evaluating whether functionally coherent communities are being captured.
+
+

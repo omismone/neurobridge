@@ -87,7 +87,7 @@ graph_draw(G,
 # Draw the clustered graph using SBM layout with scaled vertex labels
 if clustering_result and clustering_result["state"] is not None:
     print("[run_pipeline] Drawing clustered graph with SBM layout and labels...")
-    sbm_output_path = os.path.join(output_dir, f"graph_{model.lower()}_clustered.pdf")
+    sbm_output_path = os.path.join(output_dir, f"graph_{model.lower()}_clustered_thresh-{threshold_pct}.png")
 
     state = clustering_result["state"]
     g = state.g
